@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
-
-project(GitRobot)
-
-add_executable(GitRobot Ishodniki/main.cpp)
+cmake_minimum_required(VERSION 3.25)
+project(OlgaStupak)
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable(OlgaStupak Ishodniki/open.cpp)
+target_link_libraries( OlgaStupak ${OpenCV_LIBS} )
