@@ -1,0 +1,14 @@
+@startuml
+
+hide empty description
+[*] -> Waiting
+Moving --> Waiting : no_graffity
+Waiting --> Moving : there_is_graffiti
+Moving -> Rotate : angle>const_angle
+Rotate --> Moving : angle<=const_angle
+Moving --> MoveForvard : distance>const_distance
+MoveForvard --> Moving : distance<=const_distance
+Moving -> Clean : graffity_yes
+Clean --> Moving : graffity_no
+
+@enduml
