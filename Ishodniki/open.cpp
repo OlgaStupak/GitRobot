@@ -65,10 +65,10 @@ int main() {
         Scalar U_Blue = convert_hsv(Scalar(260, 100, 100));//верхн€€ граница цвета
 
         Scalar L_Red = convert_hsv(Scalar(300, 30, 30));
-        Scalar U_Red = convert_hsv(Scalar(350, 100, 100));
+        Scalar U_Red = convert_hsv(Scalar(340, 100, 100));
 
         Scalar L_Green = convert_hsv(Scalar(50, 40, 40));
-        Scalar U_Green = convert_hsv(Scalar(120, 100, 100));
+        Scalar U_Green = convert_hsv(Scalar(180, 100, 100));
 
         Mat Bmask, Rmask, Gmask;
 
