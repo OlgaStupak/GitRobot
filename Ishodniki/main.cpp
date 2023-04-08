@@ -11,7 +11,7 @@ public:
 };
 
 class Control
-{
+{ 
 public:
 	//void rigth();
 	//void left();

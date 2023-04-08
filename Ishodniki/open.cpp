@@ -61,7 +61,9 @@ int main() {
 
         Mat hsv;
         cvtColor(frame, hsv, COLOR_BGR2HSV);//преобразование полученного изображени€ в цветовое пространство hsv
-        Scalar L_Blue = convert_hsv(Scalar(110, 50, 50));//нижн€€ граница задаваемого цвета
+        
+	//сделать пол€ми камеры
+	Scalar L_Blue = convert_hsv(Scalar(110, 50, 50));//нижн€€ граница задаваемого цвета
         Scalar U_Blue = convert_hsv(Scalar(260, 100, 100));//верхн€€ граница цвета
 
         Scalar L_Red = convert_hsv(Scalar(300, 30, 30));
@@ -136,7 +138,7 @@ int main() {
         vector<vector<Point>> contoursG;
         findContours(Gmask, contoursG, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
         //если найден хот€ бы один контур
-        if (contoursG.size() > 0)
+        if (contoursG.size() > 0)// if (contoursG.size() > 0) return true//есть или нет граффити
         {
             auto contourMax = max_element(contoursG.begin(), contoursG.end(), [](auto& a, auto& b)
                 {
@@ -155,7 +157,7 @@ int main() {
             }
         }
 
-        if (contoursB.size() > 0 && contoursR.size() > 0)
+        if (contoursB.size() > 0 && contoursR.size() > 0 && contoursG.size() > 0)
         {
             // Ћини€, соедин€юща€  центр масс переда робота (синий) с п€тном
             line(result, Point(xB, yB), Point(xG, yG), Scalar(256, 256, 256), 1);
