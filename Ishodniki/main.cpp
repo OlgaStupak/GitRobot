@@ -1,5 +1,26 @@
 #include <iostream>
 #include <cmath>
+#include <stdio.h>
+#include <stdlib.h>
+//#include <unistd.h>
+#include <thread>
+#include <mosquitto.h>
+#include <string.h>
+//#include <json-c/json.h> //сделать клон с гитхаба?
+
+#define NUM_MESSAGES    30
+#define THREAD          10
+#define MQTT_SERVER     "localhost"
+#define KEEP_ALIVE      60
+#define MQTT_PORT       1883
+#define MQTT_PUB_TOPIC  "/funmqqt"
+#define MQTT_QOS_LEVEL  2
+#define MSG_MAX_SIZE    512
+
+#define mqtt_host "192.168.1.4"
+#define mqtt_port 1883
+
+#pragma comment(lib, "C:/Users/Olga/source/repos/OlgaStupak/Ishodniki/lib/mosquitto/build/lib/Debug/mosquitto.lib")
 using namespace std;
 
 class Server
@@ -11,12 +32,13 @@ public:
 };
 
 class Control
-{ 
+{
 public:
-	//void rigth();
-	//void left();
-	//void back();
-	//void straight();
+	//Control();
+	//virtual void left();
+	//virtual void rigt();
+	//virtual void forward();
+
 	int rotate(float angle)
 	{
 		return 0;
@@ -28,6 +50,49 @@ public:
 	int cleaning()
 	{
 		return 0;
+	}
+};
+
+class Control_mqtt: public Control
+{
+	bool clean_session = true;
+	struct mosquitto* mosq = NULL;
+
+
+public:
+
+	Control_mqtt()
+	{
+		mosq = mosquitto_new(NULL, clean_session, NULL);
+	}
+
+	~Control_mqtt()
+	{
+		mosquitto_destroy(mosq);
+	}
+
+	void connect() 
+	{
+		mosquitto_connect(mosq, mqtt_host, mqtt_port, KEEP_ALIVE);
+	}
+
+	void sendtoserver(const char* data)
+	{
+		mosquitto_publish(mosq, NULL, MQTT_PUB_TOPIC, strlen(data), data, 0, 0);
+	}
+
+	void left()
+	{
+		sendtoserver("{\"cmd\":\"left\", \"val\":0.1, \"spd\":0.3}");
+	}
+		
+	void right()
+	{
+		sendtoserver("{\"cmd\":\"right\", \"val\":0.1, \"spd\":0.3}");
+	}
+	void forward()
+	{
+		sendtoserver("{\"cmd\":\"forward\", \"val\":0.1, \"spd\":0.3}");
 	}
 };
 
@@ -79,9 +144,6 @@ private:
 	Control* command;
 
 public:
-	void start();
-	void stop();
-	void clean();
 
 	Robot()
 	{
