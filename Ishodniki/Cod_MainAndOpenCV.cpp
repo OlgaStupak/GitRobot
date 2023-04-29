@@ -22,9 +22,9 @@ private:
 	{
 		Mat frame;
 		//получение кадров с устройства (камеры)
-		//cap.read(frame);
+		cap.read(frame);
 
-		try
+		/*try
 		{
 			cap.read(frame);
 			
@@ -32,7 +32,7 @@ private:
 		catch (Exception &e)
 		{
 			cerr << e.what();
-		}
+		}*/
 		Mat hsv;
 		cvtColor(frame, hsv, COLOR_BGR2HSV);
 
@@ -186,7 +186,7 @@ private:
 
 	Mat frame;
 	Mat hsv;
-	Camera camera;
+	Camera &camera;
 	Graffity graffity;
 	Robot robot;
 	Mat graffityRes;
@@ -386,7 +386,7 @@ private:
 	}
 
 public:
-	Server() {}
+	Server(Camera & cmr):camera(cmr) {}
 
 	void message()
 	{
@@ -411,7 +411,6 @@ public:
 	
 	bool graff()
 	{
-		Mat hsv, frame;
 		tie(hsv, frame) = camera.toServer();
 
 		int xGraff, yGraff;
@@ -443,7 +442,13 @@ public:
 	Control()
 	{
 		state = State_Waiting;
-		
+
+
+		command = new Robot();
+
+		det = new Camera();
+
+		st = new Server(*det);
 	}
 
 	void processEvents()
@@ -507,7 +512,7 @@ public:
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	Server server;
+	//Server server;
 	//server.message();
 	Control r;
 	r.run();
