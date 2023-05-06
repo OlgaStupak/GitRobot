@@ -24,19 +24,12 @@ private:
 		//получение кадров с устройства (камеры)
 		cap.read(frame);
 
-		/*try
-		{
-			cap.read(frame);
-			
-		}
-		catch (Exception &e)
-		{
-			cerr << e.what();
-		}*/
-		Mat hsv;
-		cvtColor(frame, hsv, COLOR_BGR2HSV);
+		imshow("Original", frame);
 
-		return make_tuple(hsv, frame);
+		Mat thsv;
+		cvtColor(frame, thsv, COLOR_BGR2HSV);
+
+		return make_tuple(thsv, frame);
 	}
 public:
 
@@ -245,6 +238,8 @@ private:
 		graffityRes = Mat::zeros(frame.size(), CV_8UC3);
 		frame.copyTo(graffityRes, Gmask);
 
+		imshow("Camera", graffityRes);
+
 		int Gx = 0;
 		int Gy = 0;
 
@@ -414,6 +409,8 @@ public:
 		tie(hsv, frame) = camera.toServer();
 
 		int xGraff, yGraff;
+		//imshow("Original", frame);
+
 		tie(xGraff, yGraff) = findGraffity();
 
 		if (xGraff != -1 && yGraff != -1)
